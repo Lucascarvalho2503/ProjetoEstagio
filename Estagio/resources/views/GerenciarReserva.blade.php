@@ -67,7 +67,11 @@
                     <td>
                         <button class="edit" onclick="window.location.href='{{ route('editar-quarto', ['id' => $quarto->id]) }}'">Editar</button>
                         <button class="view">Visualizar</button>
-                        <button class="delete">Excluir</button>
+                        <form action="{{ route('excluir-quarto', ['id' => $quarto->id]) }}" method="POST" class="inline-form">
+                            @csrf
+                            @method('DELETE')
+                            <button class="delete" type="submit">Excluir</button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach

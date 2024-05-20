@@ -55,8 +55,14 @@ class QuartoController extends Controller
         ];
 
         Quarto::where('id', $id)->update($data);
-
         return redirect()->route('gerenciar-reserva');
     }
+
+    public function destroy($id)
+    {
+        Quarto::where('id', $id)->delete();
+        return redirect()->route('gerenciar-reserva');
+    }
+
 
 }

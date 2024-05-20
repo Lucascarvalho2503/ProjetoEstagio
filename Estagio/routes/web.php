@@ -18,5 +18,7 @@ Route::get('/{id}/edit', [QuartoController::class, 'edit'])->name('editar-quarto
 
 Route::put('/{id}', [QuartoController::class, 'update'])->name('atualizar-quarto');
 
+Route::delete('/{id}', [QuartoController::class, 'destroy'])->name('excluir-quarto');
+
 
 
