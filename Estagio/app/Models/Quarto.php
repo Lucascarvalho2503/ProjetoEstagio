@@ -10,6 +10,6 @@ class Quarto extends Model
     use HasFactory;
 
     protected $fillable = [
-        'numero', 'hora_entrada', 'hora_saida', 'status'
+        'numero', 'hora_entrada','hora_contratada', 'hora_saida', 'status'
     ];
 }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar Quarto</title>
-    <link rel="stylesheet" href="/css/styleGerenciar.css">
+    <link rel="stylesheet" href="/css/styleAER.css">
 </head>
 <body>
     <div class="main-content">
@@ -22,8 +22,8 @@
                 <input type="time" id="hora_entrada" name="hora_entrada" required>
             </div>
             <div>
-                <label for="hora_saida">Hora de Saída:</label>
-                <input type="time" id="hora_saida" name="hora_saida" required>
+                <label for="hora_contratada">Hora Contratada:</label>
+                <input type="time" id="hora_contratada" name="hora_contratada" required>
             </div>
             <div>
                 <label for="status">Status:</label>

@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar</title>
-    <link rel="stylesheet" href="/css/styleGerenciar.css">
+    <title>Editar Quarto</title>
+    <link rel="stylesheet" href="/css/styleAER.css">
 </head>
 <body>
     <div class="main-content">
         <header>
-            <h1>Editar quarto</h1>
+            <h1>Editar Quarto</h1>
         </header>
         <form action="{{ route('atualizar-quarto', ['id' => $quartos->id]) }}" method="POST">
             @csrf
@@ -29,10 +29,10 @@
             <div>
                 <label for="status">Status:</label>
                 <select id="status" name="status" required>
-                    <option value="ocupado" {{ $quartos->status == 'ocupado' ? 'selected' : '' }}>ocupado</option>
-                    <option value="disponivel" {{ $quartos->status == 'disponivel' ? 'selected' : '' }}>disponivel</option>
-                    <option value="em manutencao" {{ $quartos->status == 'em manutencao' ? 'selected' : '' }}>em manutencao</option>
-                    <option value="desativado" {{ $quartos->status == 'desativado' ? 'selected' : '' }}>desativado</option>
+                    <option value="ocupado" {{ $quartos->status == 'ocupado' ? 'selected' : '' }}>Ocupado</option>
+                    <option value="disponivel" {{ $quartos->status == 'disponivel' ? 'selected' : '' }}>Disponível</option>
+                    <option value="em manutencao" {{ $quartos->status == 'em manutencao' ? 'selected' : '' }}>Em Manutenção</option>
+                    <option value="desativado" {{ $quartos->status == 'desativado' ? 'selected' : '' }}>Desativado</option>
                 </select>
             </div>
             <button type="submit">Editar Quarto</button>

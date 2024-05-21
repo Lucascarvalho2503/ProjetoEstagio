@@ -10,46 +10,54 @@ use Carbon\Carbon;
 
 class QuartoController extends Controller
 {
+    
+    // Exibe a lista de todos os quartos
     public function index()
     {
         $quartos = Quarto::all();
         return view('GerenciarReserva', compact('quartos'));
     }
 
+    //-------------------------------------------------------------------------------------------------------
+    // Armazena um novo quarto no banco de dados
+
     public function store(Request $request)
     {
-        Log::info('Store method called');
-        Log::info('Request data: ', $request->all());
-
         $validatedData = $request->validate([
-            'numero' => 'required|string',  
+            'numero' => 'required|string',
             'hora_entrada' => 'required|date_format:H:i',
-            'hora_saida' => 'required|date_format:H:i',
+            'hora_contratada' => 'required|date_format:H:i',
             'status' => 'required|string'
         ]);
+        
+        $horaEntrada = Carbon::parse($request->input('hora_entrada'));
+        $horaContratada = Carbon::parse($request->input('hora_contratada'));
+        $horaSaida = $horaEntrada->copy()->addHours($horaContratada->hour)->addMinutes($horaContratada->minute);
 
-        Log::info('Validated data: ', $validatedData);
+        $validatedData['hora_saida'] = $horaSaida->format('H:i');
 
         try {
             Quarto::create($validatedData);
-            Log::info('Quarto created successfully');
         } catch (\Exception $e) {
-            Log::error('Error creating Quarto: '.$e->getMessage());
             return redirect()->route('adicionar-quarto-form')->with('error', 'Erro ao adicionar quarto.');
         }
-
         return redirect()->route('gerenciar-reserva')->with('success', 'Quarto adicionado com sucesso!');
     }
+
+    //-------------------------------------------------------------------------------------------------------
+    // Exibe o formulário de edição para um quarto específico
 
     public function edit($id)
     {
         $quarto = Quarto::where('id', $id)->first();
-        return view('EditarQuarto', ['quartos'=>$quarto]);
+        return view('EditarQuarto', ['quartos' => $quarto]);
     }
+
+    //-------------------------------------------------------------------------------------------------------
+    // Atualiza um quarto específico no banco de dados
 
     public function update(Request $request, $id)
     {
-
         $horaEntrada = Carbon::parse($request->input('hora_entrada'));
         $horaContratada = Carbon::parse($request->input('hora_contratada'));
         $horaSaida = $horaEntrada->copy()->addHours($horaContratada->hour)->addMinutes($horaContratada->minute);
@@ -57,14 +65,17 @@ class QuartoController extends Controller
         $data = [
             'numero' => $request->numero,
             'hora_entrada' => $request->hora_entrada,
-            'hora_saida' => $horaSaida->format('H:i'), // Usar a hora de saída calculada
+            'hora_contratada' => $request->hora_contratada,
+            'hora_saida' => $horaSaida->format('H:i'), 
             'status' => $request->status,
         ];
-        
 
         Quarto::where('id', $id)->update($data);
-        return redirect()->route('gerenciar-reserva');
+        return redirect()->route('gerenciar-reserva')->with('success', 'Quarto atualizado com sucesso!');
     }
+
+    //-------------------------------------------------------------------------------------------------------
+    // Remove um quarto específico do banco de dados
 
     public function destroy($id)
     {
@@ -72,17 +83,21 @@ class QuartoController extends Controller
         return redirect()->route('gerenciar-reserva');
     }
 
+    //-------------------------------------------------------------------------------------------------------
+    // Exibe o formulário de reserva para um quarto específico
+
     public function showReservaForm($id)
     {
         $quarto = Quarto::findOrFail($id);
         return view('ReservarQuarto', compact('quarto'));
     }
 
+    //-------------------------------------------------------------------------------------------------------
+    // Reserva um quarto específico e cria um registro de cliente
+
     public function reservarQuarto(Request $request, $id)
     {
         $quarto = Quarto::findOrFail($id);
-
-        // Criar cliente
         $cliente = Cliente::create([
             'nome' => $request->input('nome_cliente'),
             'cpf' => $request->input('cpf'),
@@ -92,14 +107,12 @@ class QuartoController extends Controller
         $horaContratada = Carbon::parse($request->input('hora_saida'));
         $horaSaida = $horaEntrada->copy()->addHours($horaContratada->hour)->addMinutes($horaContratada->minute);
 
-        // Atualizar quarto
         $quarto->update([
-            'hora_entrada' => $horaEntrada->format('H:i'),
-            'hora_saida' => $horaSaida->format('H:i'), // Atualizar com a hora de saída calculada
+            'hora_entrada' => $request->input('hora_entrada'),
+            'hora_saida' => $horaSaida->format('H:i'),
             'status' => 'ocupado',
         ]);
 
         return redirect()->route('gerenciar-reserva')->with('success', 'Quarto reservado com sucesso!');
     }
-
 }

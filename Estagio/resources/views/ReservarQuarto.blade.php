@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reservar</title>
-    <link rel="stylesheet" href="/css/styleGerenciar.css">
+    <title>Reservar Quarto</title>
+    <link rel="stylesheet" href="/css/styleAER.css">
 </head>
 <body>
     <div class="main-content">
         <header>
-            <h1>Reservar quarto</h1>
+            <h1>Reservar Quarto</h1>
         </header>
         <form action="{{ route('reservar-quarto', ['id' => $quarto->id]) }}" method="POST">
             @csrf

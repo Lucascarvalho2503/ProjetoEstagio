@@ -34,6 +34,7 @@
                     <th>id Quarto</th>
                     <th>Quarto</th>
                     <th>Hr. Entrada</th>
+                    <th>Hr. Contratada</th>
                     <th>Hr. Saída</th>
                     <th>Status</th>
                     <th>Ações</th>
@@ -45,6 +46,7 @@
                     <td>{{ $quarto->id }}</td>
                     <td>{{ $quarto->numero }}</td>
                     <td>{{ $quarto->hora_entrada }}</td>
+                    <td>{{ $quarto->hora_contratada }}</td>
                     <td>{{ $quarto->hora_saida }}</td>
                     <td><span class="status 
                     {{ $quarto->status == 'ocupado' ? 'ocupado' : '' }}
