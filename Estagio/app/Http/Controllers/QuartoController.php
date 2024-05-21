@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Quarto;
+use App\Models\Cliente; 
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class QuartoController extends Controller
 {
@@ -47,12 +49,18 @@ class QuartoController extends Controller
 
     public function update(Request $request, $id)
     {
+
+        $horaEntrada = Carbon::parse($request->input('hora_entrada'));
+        $horaContratada = Carbon::parse($request->input('hora_contratada'));
+        $horaSaida = $horaEntrada->copy()->addHours($horaContratada->hour)->addMinutes($horaContratada->minute);
+
         $data = [
-            'numero' => $request->numero,  
+            'numero' => $request->numero,
             'hora_entrada' => $request->hora_entrada,
-            'hora_saida' => $request->hora_saida,
+            'hora_saida' => $horaSaida->format('H:i'), // Usar a hora de saída calculada
             'status' => $request->status,
         ];
+        
 
         Quarto::where('id', $id)->update($data);
         return redirect()->route('gerenciar-reserva');
@@ -64,5 +72,34 @@ class QuartoController extends Controller
         return redirect()->route('gerenciar-reserva');
     }
 
+    public function showReservaForm($id)
+    {
+        $quarto = Quarto::findOrFail($id);
+        return view('ReservarQuarto', compact('quarto'));
+    }
+
+    public function reservarQuarto(Request $request, $id)
+    {
+        $quarto = Quarto::findOrFail($id);
+
+        // Criar cliente
+        $cliente = Cliente::create([
+            'nome' => $request->input('nome_cliente'),
+            'cpf' => $request->input('cpf'),
+        ]);
+
+        $horaEntrada = Carbon::parse($request->input('hora_entrada'));
+        $horaContratada = Carbon::parse($request->input('hora_saida'));
+        $horaSaida = $horaEntrada->copy()->addHours($horaContratada->hour)->addMinutes($horaContratada->minute);
+
+        // Atualizar quarto
+        $quarto->update([
+            'hora_entrada' => $horaEntrada->format('H:i'),
+            'hora_saida' => $horaSaida->format('H:i'), // Atualizar com a hora de saída calculada
+            'status' => 'ocupado',
+        ]);
+
+        return redirect()->route('gerenciar-reserva')->with('success', 'Quarto reservado com sucesso!');
+    }
 
 }

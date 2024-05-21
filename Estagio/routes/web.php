@@ -20,5 +20,11 @@ Route::put('/{id}', [QuartoController::class, 'update'])->name('atualizar-quarto
 
 Route::delete('/{id}', [QuartoController::class, 'destroy'])->name('excluir-quarto');
 
+Route::get('/reservar-quarto/{id}', [QuartoController::class, 'showReservaForm'])->name('reservar-quarto-form');
+
+Route::post('/reservar-quarto/{id}', [QuartoController::class, 'reservarQuarto'])->name('reservar-quarto');
+
+
+
 
 

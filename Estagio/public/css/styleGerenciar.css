@@ -124,6 +124,11 @@ button.delete {
     color: white;
 }
 
+button.reservar{
+    background-color: blueviolet;
+    color: white;
+}
+
 .add-room {
     background-color: #4CAF50;
     color: white;

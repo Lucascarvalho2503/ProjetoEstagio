@@ -23,8 +23,8 @@
                 <input type="time" id="hora_entrada" name="hora_entrada" value="{{ $quartos->hora_entrada }}" required>
             </div>
             <div>
-                <label for="hora_saida">Hora de Saída:</label>
-                <input type="time" id="hora_saida" name="hora_saida" value="{{ $quartos->hora_saida }}" required>
+                <label for="hora_contratada">Hora Contratada:</label>
+                <input type="time" id="hora_contratada" name="hora_contratada" required>
             </div>
             <div>
                 <label for="status">Status:</label>
@@ -34,7 +34,6 @@
                     <option value="em manutencao" {{ $quartos->status == 'em manutencao' ? 'selected' : '' }}>em manutencao</option>
                     <option value="desativado" {{ $quartos->status == 'desativado' ? 'selected' : '' }}>desativado</option>
                 </select>
-
             </div>
             <button type="submit">Editar Quarto</button>
         </form>

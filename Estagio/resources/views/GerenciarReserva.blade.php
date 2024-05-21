@@ -28,16 +28,6 @@
                 <button>↕ Ocupados</button>
             </div>
         </header>
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-        @if(session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
         <table>
             <thead>
                 <tr>
@@ -72,6 +62,9 @@
                             @method('DELETE')
                             <button class="delete" type="submit">Excluir</button>
                         </form>
+                        @if ($quarto->status == 'disponivel')
+                        <button class="reservar" onclick="window.location.href='{{ route('reservar-quarto-form', ['id' => $quarto->id]) }}'">Reservar</button>
+                        @endif
                     </td>
                 </tr>
                 @endforeach
