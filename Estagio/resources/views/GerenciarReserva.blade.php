@@ -56,7 +56,7 @@
                     </td>
                     <td>
                         <button class="edit" onclick="window.location.href='{{ route('editar-quarto', ['id' => $quarto->id]) }}'">Editar</button>
-                        <button class="view">Visualizar</button>
+                        <button class="view" onclick="window.location.href='{{ route('visualizar-quarto', ['id' => $quarto->id]) }}'">Visualizar</button>
                         <form action="{{ route('excluir-quarto', ['id' => $quarto->id]) }}" method="POST" class="inline-form">
                             @csrf
                             @method('DELETE')

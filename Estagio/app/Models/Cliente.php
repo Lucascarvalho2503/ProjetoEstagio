@@ -12,4 +12,10 @@ class Cliente extends Model
     protected $fillable = [
         'nome', 'cpf'
     ];
+
+    public function quartos()
+    {
+        return $this->hasMany(Quarto::class);
+    }
+
 }

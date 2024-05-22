@@ -25,6 +25,9 @@ Route::get('/reservar-quarto/{id}', [QuartoController::class, 'showReservaForm']
 
 Route::post('/reservar-quarto/{id}', [QuartoController::class, 'reservarQuarto'])->name('reservar-quarto');
 
+Route::get('/quartos/{id}/visualizar', [QuartoController::class, 'visualizar'])->name('visualizar-quarto');
+
+
 
 
 

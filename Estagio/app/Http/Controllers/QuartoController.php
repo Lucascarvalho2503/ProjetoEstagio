@@ -108,6 +108,7 @@ class QuartoController extends Controller
         $horaSaida = $horaEntrada->copy()->addHours($horaContratada->hour)->addMinutes($horaContratada->minute);
 
         $quarto->update([
+            'cliente_id' => $cliente->id,
             'hora_entrada' => $request->input('hora_entrada'),
             'hora_contratada' => $horaContratada->format('H:i'),
             'hora_saida' => $horaSaida->format('H:i'), 
@@ -117,4 +118,10 @@ class QuartoController extends Controller
         return redirect()->route('gerenciar-reserva')->with('success', 'Quarto reservado com sucesso!');
     }
     //-------------------------------------------------------------------------------------------------------
+    //Vizualiza as informações do quarto
+    public function visualizar($id)
+    {
+        $quarto = Quarto::findOrFail($id);
+        return view('VisualizarQuarto', compact('quarto'));
+    }
 }

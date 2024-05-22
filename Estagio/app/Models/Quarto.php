@@ -10,6 +10,14 @@ class Quarto extends Model
     use HasFactory;
 
     protected $fillable = [
-        'numero', 'hora_entrada','hora_contratada', 'hora_saida', 'status'
+        'numero', 'hora_entrada','hora_contratada', 'hora_saida', 'status', 'cliente_id'
     ];
+
+    public function cliente()
+    {
+        return $this->belongsTo(Cliente::class, 'cliente_id')->withDefault([
+            'nome' => 'N/A',
+            'cpf' => 'N/A',
+        ]);
+    }
 }
