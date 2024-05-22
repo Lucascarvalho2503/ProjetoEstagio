@@ -4,10 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuartoController;
 
 Route::get('/', function () {
-    return redirect()->route('gerenciar-reserva');
-});
+    return view('PaginaInicial');
+})->name('inicio');
 
 Route::get('/gerenciar-reserva', [QuartoController::class, 'index'])->name('gerenciar-reserva');
+
 Route::get('/adicionar-quarto', function () {
     return view('AdicionarQuarto');
 })->name('adicionar-quarto-form');

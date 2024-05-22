@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/styleAER.css">
 </head>
 <body>
+    <button class="back-button" onclick="window.location.href='{{ route('gerenciar-reserva') }}'">Voltar</button>
     <div class="main-content">
         <header>
             <h1>Reservar Quarto</h1>
@@ -22,8 +23,8 @@
                 <input type="time" id="hora_entrada" name="hora_entrada" required>
             </div>
             <div>
-                <label for="hora_saida">Hora Contratada:</label>
-                <input type="time" id="hora_saida" name="hora_saida" required>
+                <label for="hora_contratada">Hora Contratada:</label>
+                <input type="time" id="hora_contratada" name="hora_contratada" required>
             </div>
             <div>
                 <label for="nome_cliente">Nome do Cliente:</label>

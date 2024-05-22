@@ -13,7 +13,7 @@
         </div>
         <nav>
             <ul>
-                <li><a href="#">Página Inicial</a></li>
+                <li><a href="{{ route('inicio') }}">Página Inicial</a></li>
                 <li><a href="#" class="active">Visualizar Quartos</a></li>
                 <li><a href="#">Produtos</a></li>
                 <li><a href="#">Comanda</a></li>
@@ -24,9 +24,7 @@
         <header>
             <h1>Visualizar Quartos</h1>
             <div class="search-bar">
-                <input type="text" placeholder="Pesquisar por quarto">
-                <button>↕ Ocupados</button>
-            </div>
+            <button class="add-room" onclick="window.location.href='{{ route('adicionar-quarto-form') }}'">Adicionar Quarto</button>
         </header>
         <table>
             <thead>
@@ -72,7 +70,7 @@
                 @endforeach
             </tbody>
         </table>
-        <button class="add-room" onclick="window.location.href='{{ route('adicionar-quarto-form') }}'">Adicionar Quarto</button>
+        
     </div>
 </body>
 </html>

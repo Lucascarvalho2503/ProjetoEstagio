@@ -7,8 +7,10 @@
     <link rel="stylesheet" href="/css/styleAER.css">
 </head>
 <body>
+    <button class="back-button" onclick="window.location.href='{{ route('gerenciar-reserva') }}'">Voltar</button>
     <div class="main-content">
         <header>
+            
             <h1>Adicionar Quarto</h1>
         </header>
         <form action="{{ route('adicionar-quarto') }}" method="POST">

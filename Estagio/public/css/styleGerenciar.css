@@ -2,7 +2,8 @@ body {
     font-family: Arial, sans-serif;
     display: flex;
     margin: 0;
-    height: 100vh;
+    min-height: 100vh; /* Para garantir que a página ocupe toda a altura da janela */
+    background-color: #f4f4f4; /* Fundo cinza claro */
 }
 
 .sidebar {
@@ -11,8 +12,9 @@ body {
     color: #fff;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start; /* Alinha os itens no início */
     padding: 20px;
+    min-height: 100vh; /* Para garantir que a sidebar ocupe toda a altura */
 }
 
 .user-section {
@@ -41,6 +43,8 @@ nav ul li a.active {
 .main-content {
     flex: 1;
     padding: 20px;
+    background-color: #ffffff; /* Fundo branco para o conteúdo principal */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra para destacar o conteúdo principal */
 }
 
 header {
@@ -114,7 +118,6 @@ button {
     transition: background-color 0.3s ease;
 }
 
-
 button.edit {
     background-color: #388e3c; 
     color: white;
@@ -160,7 +163,6 @@ button.add-room {
     cursor: pointer;
     margin-top: 20px;
     display: block;
-    
     text-align: center;
 }
 

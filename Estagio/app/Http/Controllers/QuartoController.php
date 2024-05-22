@@ -14,7 +14,7 @@ class QuartoController extends Controller
     // Exibe a lista de todos os quartos
     public function index()
     {
-        $quartos = Quarto::all();
+        $quartos = Quarto::orderBy('numero', 'asc')->get();
         return view('GerenciarReserva', compact('quartos'));
     }
 
@@ -104,15 +104,17 @@ class QuartoController extends Controller
         ]);
 
         $horaEntrada = Carbon::parse($request->input('hora_entrada'));
-        $horaContratada = Carbon::parse($request->input('hora_saida'));
+        $horaContratada = Carbon::parse($request->input('hora_contratada'));
         $horaSaida = $horaEntrada->copy()->addHours($horaContratada->hour)->addMinutes($horaContratada->minute);
 
         $quarto->update([
             'hora_entrada' => $request->input('hora_entrada'),
-            'hora_saida' => $horaSaida->format('H:i'),
+            'hora_contratada' => $horaContratada->format('H:i'),
+            'hora_saida' => $horaSaida->format('H:i'), 
             'status' => 'ocupado',
         ]);
 
         return redirect()->route('gerenciar-reserva')->with('success', 'Quarto reservado com sucesso!');
     }
+    //-------------------------------------------------------------------------------------------------------
 }

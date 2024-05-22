@@ -1,9 +1,28 @@
-/* Estilos para a página de adicionar e editar quarto */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fonte mais moderna e limpa */
     background-color: #d1d1d1; /* Fundo cinza claro */
     margin: 0;
     padding: 0;
+}
+
+button.back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 5px 10px;
+    background-color: #3498db;; 
+    color: white; 
+    text-decoration: none; 
+    border-radius: 5px; 
+    font-size: 14px; 
+    width: auto; 
+    display: inline-block; 
+    border: none; 
+    cursor: pointer; 
+}
+
+button.back-button:hover {
+    background-color: #2980b9; 
 }
 
 .main-content {
