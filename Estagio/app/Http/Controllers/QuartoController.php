@@ -36,11 +36,7 @@ class QuartoController extends Controller
 
         $validatedData['hora_saida'] = $horaSaida->format('H:i');
 
-        try {
-            Quarto::create($validatedData);
-        } catch (\Exception $e) {
-            return redirect()->route('adicionar-quarto-form')->with('error', 'Erro ao adicionar quarto.');
-        }
+        Quarto::create($validatedData);
         return redirect()->route('gerenciar-reserva')->with('success', 'Quarto adicionado com sucesso!');
     }
 
