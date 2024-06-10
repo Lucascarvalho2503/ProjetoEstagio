@@ -31,8 +31,8 @@
                 <label for="status">Status:</label>
                 <select id="status" name="status" required>
                     <option value="ocupado" {{ $quartos->status == 'ocupado' ? 'selected' : '' }}>Ocupado</option>
-                    <option value="disponivel" {{ $quartos->status == 'disponivel' ? 'selected' : '' }}>Disponível</option>
-                    <option value="em manutencao" {{ $quartos->status == 'em manutencao' ? 'selected' : '' }}>Em Manutenção</option>
+                    <option value="disponível" {{ $quartos->status == 'disponível' ? 'selected' : '' }}>Disponível</option>
+                    <option value="em manutenção" {{ $quartos->status == 'em manutenção' ? 'selected' : '' }}>Em Manutenção</option>
                     <option value="desativado" {{ $quartos->status == 'desativado' ? 'selected' : '' }}>Desativado</option>
                 </select>
             </div>

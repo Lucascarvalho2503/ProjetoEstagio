@@ -31,8 +31,8 @@
                 <label for="status">Status:</label>
                 <select id="status" name="status" required>
                     <option value="ocupado">Ocupado</option>
-                    <option value="disponivel">Disponível</option>
-                    <option value="em manutencao">Em Manutenção</option>
+                    <option value="disponível">Disponível</option>
+                    <option value="em manutenção">Em Manutenção</option>
                     <option value="desativado">Desativado</option>
                 </select>
             </div>

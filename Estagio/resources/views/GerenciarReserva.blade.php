@@ -47,11 +47,11 @@
                     <td>{{ $quarto->hora_contratada }}</td>
                     <td>{{ $quarto->hora_saida }}</td>
                     <td><span class="status 
-                    {{ $quarto->status == 'ocupado' ? 'ocupado' : '' }}
-                    {{ $quarto->status == 'disponivel' ? 'disponivel' : '' }} 
-                    {{ $quarto->status == 'em manutencao' ? 'manutencao' : '' }} 
-                    {{ $quarto->status == 'desativado' ? 'desativado' : '' }}">
-                    {{ $quarto->status }}
+                     {{ $quarto->status == 'ocupado' ? 'ocupado' : '' }}
+                     {{ $quarto->status == 'disponível' ? 'disponível' : '' }}
+                     {{ $quarto->status == 'em manutenção' ? 'manutenção' : '' }}
+                     {{ $quarto->status == 'desativado' ? 'desativado' : '' }}">
+                     {{ $quarto->status }}
                     </span>
                     </td>
                     <td>
@@ -73,7 +73,7 @@
                         </svg>
                         </button>
                         </form>
-                        @if ($quarto->status == 'disponivel')
+                        @if ($quarto->status == 'disponível')
                         <button class="reservar" onclick="window.location.href='{{ route('reservar-quarto-form', ['id' => $quarto->id]) }}'">Reservar</button>
                         @endif
                     </td>
