@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="/css/styleAER.css">
 </head>
 <body>
-    <button class="back-button" onclick="window.location.href='{{ route('gerenciar-reserva') }}'">Voltar</button>
+<button class="back-button" onclick="history.back()">Voltar</button>
+
     <div class="main-content">
         <header>
-            
             <h1>Adicionar Quarto</h1>
         </header>
         <form action="{{ route('adicionar-quarto') }}" method="POST">
@@ -20,12 +20,13 @@
                 <input type="number" id="numero" name="numero" required>
             </div>
             <div>
-                <label for="hora_entrada">Hora de Entrada:</label>
-                <input type="time" id="hora_entrada" name="hora_entrada" required>
-            </div>
-            <div>
-                <label for="hora_contratada">Hora Contratada:</label>
-                <input type="time" id="hora_contratada" name="hora_contratada" required>
+                <label for="tamanho">Tamanho:</label>
+                <select id="tamanho" name="tamanho" required>
+                    <option value="Pequeno">Pequeno</option>
+                    <option value="Médio">Médio</option>
+                    <option value="Grande">Grande</option>
+                    <option value="Luxo">Luxo</option>
+                </select>
             </div>
             <div>
                 <label for="status">Status:</label>

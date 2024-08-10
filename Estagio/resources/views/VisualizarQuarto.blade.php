@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="/css/styleAER.css">
 </head>
 <body>
-    <button class="back-button" onclick="window.location.href='{{ route('gerenciar-reserva') }}'">Voltar</button>
+<button class="back-button" onclick="history.back()">Voltar</button>
+
     <div class="main-content">
         <header>
             <h1>Visualizar Quarto</h1>

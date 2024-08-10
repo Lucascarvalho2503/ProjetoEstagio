@@ -27,6 +27,10 @@ Route::post('/reservar-quarto/{id}', [QuartoController::class, 'reservarQuarto']
 
 Route::get('/quartos/{id}/visualizar', [QuartoController::class, 'visualizar'])->name('visualizar-quarto');
 
+Route::get('/CriarQuartos', [QuartoController::class, 'CriarQuartos'])->name('CriarQuartos');
+
+Route::put('/limpar-reserva/{id}', [QuartoController::class, 'limparReserva'])->name('limpar-reserva');
+
 
 
 
