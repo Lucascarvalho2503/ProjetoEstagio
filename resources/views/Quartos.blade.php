@@ -69,7 +69,9 @@
 <body class="bg-gray-200">
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
 
-<div class="flex justify-center items-center flex-col mt-8">
+<x-sidebar></x-sidebar>
+
+<div class="flex justify-center ml-64 items-center flex-col mt-8">
     <!-- Formulário para criar novos quartos -->
 
     <div class="w-[900px] mt-2 p-5 bg-gray-600 border border-black rounded-lg flex">
@@ -86,6 +88,14 @@
     <div class="w-[900px] mt-2 p-5 bg-gray-600 border border-black rounded-lg flex">
         <form action="{{ route('quartos.store') }}" method="POST" class="flex space-x-4 mt-1 w-full">
             @csrf
+
+            @if ($errors->has('numero'))
+            <div class="text-red-500 text-sm mb-4">
+                {{ $errors->first('numero') }}
+            </div>
+            @endif
+
+            
             <div class="w-1/2 mt-1">
                 <label for="tipo_de_quarto" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo de quarto</label>
                 <input type="text" name="tipo_de_quarto" id="tipo_de_quarto" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Ex: Quarto de luxo" required />
@@ -93,6 +103,11 @@
             <div class="w-1/2 mt-1">
                 <label for="valor_hora" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Valor da hora</label>
                 <input type="text" name="valor_hora" id="valor_hora" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+            </div>
+
+            <div class="w-1/2 mt-1">
+                <label for="numero" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Número do quarto</label>
+                <input type="number" name="numero" id="numero" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
             </div>
 
             <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white h-10 mt-8 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Status 
@@ -122,11 +137,12 @@
     </div>
 
     <!-- Tabela para exibir os quartos -->
-    <div class="relative mt-2 w-[900px] h-full overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="relative mt-2 mb-4 w-[900px] h-full overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-800 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3">ID do quarto</th>
+                    <th scope="col" class="px-6 py-3">Número do quarto</th>
                     <th scope="col" class="px-6 py-3">Tipo do quarto</th>
                     <th scope="col" class="px-6 py-3">Valor da hora</th>
                     <th scope="col" class="px-6 py-3">Status do quarto</th>
@@ -138,6 +154,7 @@
                 @foreach ($quartos as $quarto)
                     <tr class="bg-white border-b dark:bg-gray-600 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $quarto->id }}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $quarto->numero }}</td>
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $quarto->tipo_de_quarto }}</th>
                         <td class="px-6 py-4">{{ $quarto->valor_hora }}</td>
                         <td class="px-6 py-4">{{ $quarto->status->name }}</td>
@@ -186,6 +203,10 @@
                 <div class="mt-2">
                     <label for="edit_valor_hora" class="block mb-2 text-sm font-medium text-gray-200 dark:text-white">Valor da hora</label>
                     <input type="text" id="edit_valor_hora" name="valor_hora" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                </div>
+                <div class="mt-2">
+                    <label for="edit_numero" class="block mb-2 text-sm font-medium text-gray-200 dark:text-white">Número do quarto</label>
+                    <input type="number" id="edit_numero" name="edit_numero" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
                 </div>
                 <div class="mt-2">
                     <label class="block mb-2 text-sm font-medium text-gray-200 dark:text-white">Status</label>

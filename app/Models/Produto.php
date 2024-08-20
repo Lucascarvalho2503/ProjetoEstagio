@@ -10,4 +10,10 @@ class Produto extends Model
     use HasFactory;
 
     protected $fillable = ['nome', 'valor', 'imagem', 'estoque']; // Adicione 'estoque'
+    
+    public function produtos()
+    {
+       return $this->hasMany(ComandaProduto::class);
+    }
+
 }

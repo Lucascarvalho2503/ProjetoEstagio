@@ -67,7 +67,10 @@
 </head>
 <body class="bg-gray-200">
 
-<div class="flex justify-center items-center flex-col mt-8">
+<x-sidebar></x-sidebar>
+
+
+<div class="flex justify-center ml-64 items-center flex-col mt-8">
     <!-- Formulário para criar novos clientes -->
     <div class="w-[700px] p-5 bg-gray-600 border border-black rounded-lg">
         <form action="{{ route('clientes.store') }}" method="POST" class="mt-1">

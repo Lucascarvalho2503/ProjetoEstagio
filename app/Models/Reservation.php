@@ -27,5 +27,10 @@ class Reservation extends Model
     {
         return $this->belongsTo(Quarto::class);
     }
+
+    public function scopeActive($query)
+{
+    return $query->where('status', 'open');
+}
 }
 

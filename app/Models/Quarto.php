@@ -1,6 +1,5 @@
 <?php
 
-// app/Models/Quarto.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,7 +9,7 @@ class Quarto extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['tipo_de_quarto', 'valor_hora', 'status_id'];
+    protected $fillable = ['tipo_de_quarto', 'valor_hora', 'status_id', 'numero'];
 
     public function status()
     {
@@ -18,7 +17,14 @@ class Quarto extends Model
     }
 
     public function reservations()
-    { 
-        return $this->hasMany(Reservation::class);
+    {
+        return $this->hasMany(Reservation::class, 'quarto_id');
     }
+
+    public function currentReservation()
+    {
+        return $this->hasOne(Reservation::class)->where('status', 'open');
+    }
+
+
 }

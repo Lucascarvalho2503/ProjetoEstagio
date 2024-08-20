@@ -7,6 +7,7 @@
 </head>
 <body>
 
+
 <div class="flex justify-center items-center h-screen space-x-4">
 
   <a href="{{ route('quartos.index') }}" class="block w-48 h-48 p-6 bg-white border border-gray-200 rounded-3xl shadow hover:bg-gray-100 dark:bg-gray-600 dark:border-gray-700 dark:hover:bg-gray-700">

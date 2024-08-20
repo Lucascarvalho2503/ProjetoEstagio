@@ -72,7 +72,10 @@
 </head>
 <body class="bg-gray-200">
 
-<div class="flex justify-center items-center flex-col mt-8">
+<x-sidebar></x-sidebar>
+
+
+<div class="flex justify-center ml-64 items-center flex-col mt-8">
     <!-- Formulário para criar novos produtos -->
     <div class="w-[580px] mt-2 p-5 bg-gray-600 border border-black rounded-lg">
         <form action="{{ route('produtos.store') }}" method="POST" enctype="multipart/form-data">

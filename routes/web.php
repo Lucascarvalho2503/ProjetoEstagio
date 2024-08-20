@@ -35,8 +35,11 @@ Route::get('/statuses', [StatusController::class, 'index'])->name('statuses.inde
 // Rotas de Reserva
 Route::get('/reservas', [ReservationController::class, 'index'])->name('reservas.index');
 Route::post('/reservas', [ReservationController::class, 'store'])->name('reservas.store');
-Route::put('/reservas/{reserva}', [ReservationController::class, 'update'])->name('reservas.update');
+Route::get('/reservas/{id}/edit', [ReservationController::class, 'edit'])->name('reservas.edit');
+Route::get('/reservas/{id}/detalhes', [ReservationController::class, 'detalhes'])->name('reservas.detalhes');
+Route::put('/reservas/{id}', [ReservationController::class, 'update'])->name('reservas.update');
 Route::put('/reservas/{id}/finalizar', [ReservationController::class, 'finalizar'])->name('reservas.finalizar');
+Route::delete('/reservas/{id}', [ReservationController::class, 'destroy'])->name('reservas.destroy');
 
 // Rotas de Comanda
 Route::get('/comandas', [ComandaController::class, 'index'])->name('comandas.index');
