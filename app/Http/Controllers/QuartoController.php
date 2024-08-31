@@ -11,7 +11,7 @@ class QuartoController extends Controller
     // Exibe a lista de quartos e todos os status disponíveis
     public function index()
     {
-        $quartos = Quarto::with('status')->get(); // Inclui o relacionamento de status
+        $quartos = Quarto::with('status')->orderBy('numero', 'asc')->get(); // Inclui o relacionamento de status
         $statuses = Status::all(); // Busca todos os status
         return view('Quartos', compact('quartos', 'statuses'));
     }
@@ -43,7 +43,6 @@ class QuartoController extends Controller
             'tipo_de_quarto' => 'required|string|max:255',
             'valor_hora' => 'required|numeric',
             'status_id' => 'required|exists:statuses,id',
-            'numero' => 'required|integer|unique:quartos,numero,' . $id, // Adiciona validação para 'numero'
         ]);
 
         $quarto = Quarto::findOrFail($id);
@@ -51,7 +50,6 @@ class QuartoController extends Controller
             'tipo_de_quarto' => $request->tipo_de_quarto,
             'valor_hora' => $request->valor_hora,
             'status_id' => $request->status_id,
-            'numero' => 'required|integer|unique:quartos,numero,' . $id, // Atualiza o campo 'numero'
         ]);
 
         return response()->json(['success' => 'Quarto atualizado com sucesso.']);

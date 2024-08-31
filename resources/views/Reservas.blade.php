@@ -12,7 +12,6 @@
 
 <x-sidebar></x-sidebar>
 
-
 <!-- Modal de Reserva -->
 <div id="reservationModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden z-50">
     <div class="bg-gray-600 border border-black rounded-lg w-96 p-6">
@@ -57,6 +56,15 @@
             <button type="button" onclick="hideReservationModal()" class="ml-2 text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5">Cancelar</button>
         </form>
     </div>
+</div>
+
+<div class="flex justify-center ml-64 items-center flex-row mt-6 gap-4">
+<a href="{{ route('clientes.index') }}" class="text-white w-1/3 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 inline-block text-center">
+    Criar cliente
+</a>
+<button onclick="showClientesModal()" class="text-white w-1/3 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5">
+    Buscar cliente
+</button>
 </div>
 
 <div class="flex justify-center ml-64 items-center flex-col">
@@ -105,6 +113,46 @@
         </table>
     </div>
 </div>
+
+
+<!-- Modal Clientes -->
+<div id="clientesModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center hidden">
+    <div class="bg-gray-900 rounded-lg shadow-lg w-3/4 md:w-1/2 lg:w-1/3">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h3 class="text-xl text-white font-semibold">Clientes</h3>
+            <button onclick="hideClientesModal()" class="text-gray-500 hover:text-gray-700">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="p-4">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Nome</th>
+                        <th scope="col" class="px-6 py-3">CPF</th>
+                        <th scope="col" class="px-6 py-3">Contato</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($clientes as $cliente)
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $cliente->nome }}</td>
+                            <td class="px-6 py-4">{{ $cliente->cpf }}</td>
+                            <td class="px-6 py-4">{{ $cliente->celular }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
 
 
 
@@ -257,6 +305,14 @@
                 window.location.reload();
             });
         }
+    }
+
+    function showClientesModal() {
+        document.getElementById('clientesModal').classList.remove('hidden');
+    }
+
+    function hideClientesModal() {
+        document.getElementById('clientesModal').classList.add('hidden');
     }
 
     document.addEventListener('DOMContentLoaded', () => {

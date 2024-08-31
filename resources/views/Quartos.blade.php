@@ -24,7 +24,7 @@
                     valorInput.value = quarto.valor_hora;
 
                     // Set selected status in dropdown
-                    document.querySelector(`#edit_status_${quarto.status.id}`).checked = true;
+                    document.querySelector(#edit_status_${quarto.status.id}).checked = true;
 
                     modal.classList.remove('hidden');
                     overlay.classList.remove('hidden');
@@ -43,7 +43,7 @@
             // Submit the form to update the quarto
             document.getElementById('editForm').addEventListener('submit', function(event) {
                 event.preventDefault();
-                const url = `/quartos/${currentQuartoId}`;
+                const url = /quartos/${currentQuartoId};
                 const data = {
                     tipo_de_quarto: tipoInput.value,
                     valor_hora: valorInput.value,
@@ -137,45 +137,60 @@
     </div>
 
     <!-- Tabela para exibir os quartos -->
-    <div class="relative mt-2 mb-4 w-[900px] h-full overflow-x-auto shadow-md sm:rounded-lg">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-800 dark:text-gray-400">
-                <tr>
-                    <th scope="col" class="px-6 py-3">ID do quarto</th>
-                    <th scope="col" class="px-6 py-3">Número do quarto</th>
-                    <th scope="col" class="px-6 py-3">Tipo do quarto</th>
-                    <th scope="col" class="px-6 py-3">Valor da hora</th>
-                    <th scope="col" class="px-6 py-3">Status do quarto</th>
-                    <th scope="col" class="px-6 py-3">Configurar</th>
-                    <th scope="col" class="px-6 py-3">Excluir</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($quartos as $quarto)
-                    <tr class="bg-white border-b dark:bg-gray-600 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $quarto->id }}</td>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $quarto->numero }}</td>
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $quarto->tipo_de_quarto }}</th>
-                        <td class="px-6 py-4">{{ $quarto->valor_hora }}</td>
-                        <td class="px-6 py-4">{{ $quarto->status->name }}</td>
-                        <td class="px-6 py-4">
+<div class="relative mt-2 mb-4 w-[900px] h-full overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-800 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">ID do quarto</th>
+                <th scope="col" class="px-6 py-3">Número do quarto</th>
+                <th scope="col" class="px-6 py-3">Tipo do quarto</th>
+                <th scope="col" class="px-6 py-3">Valor da hora</th>
+                <th scope="col" class="px-6 py-3">Status do quarto</th>
+                <th scope="col" class="px-6 py-3">Configurar</th>
+                <th scope="col" class="px-6 py-3">Excluir</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($quartos as $quarto)
+                <tr class="bg-white border-b dark:bg-gray-600 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $quarto->id }}</td>
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $quarto->numero }}</td>
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $quarto->tipo_de_quarto }}</th>
+                    <td class="px-6 py-4">{{ $quarto->valor_hora }}</td>
+                    <td class="px-6 py-4">{{ $quarto->status->name }}</td>
+                    <td class="px-6 py-4">
+                        @if($quarto->status->name === 'Ocupado')
+                            <!-- Botão de editar desativado com cor mais escura -->
+                            <button class="text-white bg-blue-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-900 cursor-not-allowed" disabled>
+                                Editar
+                            </button>
+                        @else
                             <button class="text-white editButton bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                     data-quarto="{{ $quarto }}">
                                 Editar
                             </button>
-                        </td>
-                        <td class="px-6 py-4">
+                        @endif
+                    </td>
+                    <td class="px-6 py-4">
+                        @if($quarto->status->name === 'Ocupado')
+                            <!-- Botão de excluir desativado com cor mais escura -->
+                            <button class="text-white bg-red-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-900 cursor-not-allowed" disabled>
+                                Excluir
+                            </button>
+                        @else
                             <form action="{{ route('quartos.destroy', $quarto->id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir este quarto?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Excluir</button>
                             </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+                        @endif
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
 
 </div>
 

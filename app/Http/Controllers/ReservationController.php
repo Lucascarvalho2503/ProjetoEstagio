@@ -13,7 +13,7 @@ class ReservationController extends Controller
 {
     public function index()
     {
-        $quartos = Quarto::with(['currentReservation.cliente'])->get();
+        $quartos = Quarto::with(['currentReservation.cliente'])->orderBy('numero', 'asc')->get();
         $clientes = Cliente::all();
 
         return view('Reservas', compact('quartos', 'clientes'));
