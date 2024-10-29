@@ -7,63 +7,70 @@
     @vite('resources/css/app.css')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById('modal');
-            const closeButton = document.getElementById('closeModal');
-            const overlay = document.getElementById('overlay');
-            const editButtons = document.querySelectorAll('.editButton');
-            const tipoInput = document.getElementById('edit_tipo_de_quarto');
-            const valorInput = document.getElementById('edit_valor_hora');
-            let currentQuartoId;
+        const modal = document.getElementById('modal');
+        const closeButton = document.getElementById('closeModal');
+        const overlay = document.getElementById('overlay');
+        const editButtons = document.querySelectorAll('.editButton');
+        const tipoInput = document.getElementById('edit_tipo_de_quarto');
+        const valorInput = document.getElementById('edit_valor_hora');
+        const numeroInput = document.getElementById('edit_numero');
+        let currentQuartoId;
 
-            // Open modal when Edit is clicked
-            editButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const quarto = JSON.parse(this.getAttribute('data-quarto'));
-                    currentQuartoId = quarto.id;
-                    tipoInput.value = quarto.tipo_de_quarto;
-                    valorInput.value = quarto.valor_hora;
+        // Open modal when Edit is clicked
+        editButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const quarto = JSON.parse(this.getAttribute('data-quarto'));
+                currentQuartoId = quarto.id;
+                tipoInput.value = quarto.tipo_de_quarto;
+                valorInput.value = quarto.valor_hora;
+                numeroInput.value = quarto.numero;
 
-                    // Set selected status in dropdown
-                    document.querySelector(#edit_status_${quarto.status.id}).checked = true;
+                // Set selected status in dropdown
+                const statusElement = document.querySelector(`#edit_status_${quarto.status_id}`);
+                if (statusElement) {
+                    statusElement.checked = true;
+                }
 
-                    modal.classList.remove('hidden');
-                    overlay.classList.remove('hidden');
-                });
-            });
-
-            // Close modal when clicking outside or on the close button
-            closeButton.addEventListener('click', closeModal);
-            overlay.addEventListener('click', closeModal);
-
-            function closeModal() {
-                modal.classList.add('hidden');
-                overlay.classList.add('hidden');
-            }
-
-            // Submit the form to update the quarto
-            document.getElementById('editForm').addEventListener('submit', function(event) {
-                event.preventDefault();
-                const url = /quartos/${currentQuartoId};
-                const data = {
-                    tipo_de_quarto: tipoInput.value,
-                    valor_hora: valorInput.value,
-                    status_id: document.querySelector('input[name="status_id"]:checked').value,
-                    _token: document.querySelector('input[name="_token"]').value
-                };
-
-                fetch(url, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                }).then(response => {
-                    if (response.ok) {
-                        location.reload();
-                    }
-                });
+                modal.classList.remove('hidden');
+                overlay.classList.remove('hidden');
             });
         });
+
+        // Close modal when clicking outside or on the close button
+        closeButton.addEventListener('click', closeModal);
+        overlay.addEventListener('click', closeModal);
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            overlay.classList.add('hidden');
+        }
+
+        // Submit the form to update the quarto
+        document.getElementById('editForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const url = `/quartos/${currentQuartoId}`;
+            const data = {
+                tipo_de_quarto: tipoInput.value,
+                valor_hora: valorInput.value,
+                numero: numeroInput.value,
+                status_id: document.querySelector('input[name="status_id"]:checked').value,
+                _token: document.querySelector('input[name="_token"]').value
+            };
+
+            fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            }).then(response => {
+                if (response.ok) {
+                    location.reload();
+                }
+            });
+        });
+    });
+
     </script>
 </head>
 <body class="bg-gray-200">

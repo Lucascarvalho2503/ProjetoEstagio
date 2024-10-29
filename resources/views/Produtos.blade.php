@@ -13,6 +13,7 @@
             const editButtons = document.querySelectorAll('.editButton');
             const nomeInput = document.getElementById('edit_nome');
             const valorInput = document.getElementById('edit_valor');
+            const estoqueInput = document.getElementById('edit_estoque'); // Adicionando estoque aqui
             let currentProdutoId;
 
             // Abrir modal ao clicar em Editar
@@ -22,6 +23,13 @@
                     currentProdutoId = produto.id;
                     nomeInput.value = produto.nome;
                     valorInput.value = produto.valor;
+
+                    // Preencher o campo de estoque
+                    if (produto.estoque !== undefined) {
+                        estoqueInput.value = produto.estoque; // Preenche o campo de estoque
+                    } else {
+                        estoqueInput.value = ''; // Se o estoque não estiver definido, exibe em branco
+                    }
 
                     modal.classList.remove('hidden');
                     overlay.classList.remove('hidden');
@@ -74,29 +82,57 @@
 
 <x-sidebar></x-sidebar>
 
+    <div class="flex justify-center ml-64 items-center flex-col mt-8">
+        <!-- Botão para abrir o modal -->
+        <div class="flex justify-center items-center flex-col mt-8">
+            <button onclick="showProductModal()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                Adicionar Novo Produto
+            </button>
+        </div>
 
-<div class="flex justify-center ml-64 items-center flex-col mt-8">
-    <!-- Formulário para criar novos produtos -->
-    <div class="w-[580px] mt-2 p-5 bg-gray-600 border border-black rounded-lg">
-        <form action="{{ route('produtos.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="w-full">
-                <label for="nome" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nome do produto</label>
-                <input type="text" name="nome" id="nome" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-            </div>
-            <div class="w-full mt-2">
-                <label for="valor" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Valor do produto</label>
-                <input type="text" name="valor" id="valor" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-            </div>
-            <div class="w-full mt-2">
-                <label for="estoque" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Estoque do produto</label>
-                <input type="text" name="estoque" id="estoque" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-            </div>
-            <label class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white" for="imagem">Foto do produto (.webp)</label>
-            <input class="block w-full mb-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="imagem" name="imagem" type="file">
-            <button type="submit" class="text-white h-10 mt-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Criar produto</button>
-        </form>
+    <!-- Modal -->
+    <div id="productModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden z-50">
+        <div class="bg-gray-600 border border-black rounded-lg w-[580px] p-5">
+            <h2 class="text-xl font-bold text-white mb-4">Criar Produto</h2>
+            <form action="{{ route('produtos.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="w-full">
+                    <label for="nome" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nome do produto</label>
+                    <input type="text" name="nome" id="nome" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                </div>
+                <div class="w-full mt-2">
+                    <label for="valor" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Valor do produto</label>
+                    <input type="text" name="valor" id="valor" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                </div>
+                <div class="w-full mt-2">
+                    <label for="estoque" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Estoque do produto</label>
+                    <input type="text" name="estoque" id="estoque" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                </div>
+                <label class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white" for="imagem">Foto do produto (.webp)</label>
+                <input class="block w-full mb-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="imagem" name="imagem" type="file">
+                
+                <div class="flex justify-between">
+                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        Criar Produto
+                    </button>
+                    <button type="button" onclick="hideProductModal()" class="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
+
+    <!-- Script para abrir e fechar o modal -->
+    <script>
+        function showProductModal() {
+            document.getElementById('productModal').classList.remove('hidden');
+        }
+
+        function hideProductModal() {
+            document.getElementById('productModal').classList.add('hidden');
+        }
+    </script>
 
     <!-- Cards de produtos -->
     <div class="grid grid-cols-1 mb-8 sm:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center mt-8">
@@ -149,8 +185,8 @@
                 <input type="text" name="valor" id="edit_valor" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
             </div>
             <div class="w-full">
-                <label for="estoque" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Editar valor do produto</label>
-                <input type="text" name="estoque" id="estoque" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                <label for="edit_estoque" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Editar estoque do produto</label>
+                <input type="text" name="estoque" id="edit_estoque" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
             </div>
             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="edit_imagem">Editar foto do produto (.webp)</label>
             <input class="block w-full mb-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="edit_imagem" name="imagem" type="file">

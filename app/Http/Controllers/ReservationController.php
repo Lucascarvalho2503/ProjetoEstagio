@@ -62,29 +62,27 @@ class ReservationController extends Controller
     {
         $request->validate([
             'quarto_id' => 'required|exists:quartos,id',
-            'cliente_id' => 'required|exists:clientes,id',
             'horario_entrada' => 'required|date_format:H:i',
             'horas_contratadas' => 'required|integer|min:1',
         ]);
 
+        // Encontre a reserva
         $reservation = Reservation::findOrFail($id);
-        $quarto = Quarto::find($request->input('quarto_id'));
-        $valor_final = $quarto->valor_hora * (int)$request->input('horas_contratadas');
 
+        // Calcule o horário de saída baseado nas horas contratadas
         $horarioEntrada = Carbon::createFromFormat('H:i', $request->input('horario_entrada'))->format('Y-m-d H:i:s');
         $horarioSaida = Carbon::createFromFormat('H:i', $request->input('horario_entrada'))->addHours((int)$request->input('horas_contratadas'))->format('Y-m-d H:i:s');
 
+        // Atualize os dados da reserva
         $reservation->update([
-            'quarto_id' => $request->input('quarto_id'),
-            'cliente_id' => $request->input('cliente_id'),
             'horario_entrada' => $horarioEntrada,
             'horas_contratadas' => $request->input('horas_contratadas'),
             'horario_saida' => $horarioSaida,
-            'valor_final' => $valor_final,
         ]);
 
         return redirect()->route('reservas.index')->with('success', 'Reserva atualizada com sucesso.');
     }
+
 
     public function finalizar($id)
     {
@@ -142,6 +140,35 @@ class ReservationController extends Controller
     {
         $reserva = Reservation::findOrFail($id);
 
-        return response()->json($reserva);
+        // Retorna apenas os dados necessários para edição
+        return response()->json([
+            'quarto_id' => $reserva->quarto_id,
+            'horario_entrada' => Carbon::parse($reserva->horario_entrada)->format('H:i'),
+            'horas_contratadas' => $reserva->horas_contratadas,
+        ]);
     }
+
+
+    public function verificarCpf(Request $request)
+    {
+        // Limpa o CPF removendo tudo que não é número
+        $cpf = preg_replace('/\D/', '', $request->cpf);
+    
+        // Validação do CPF
+        $request->validate([
+            'cpf' => 'required|digits:11'
+        ]);
+    
+        // Busca o cliente pelo CPF
+        $cliente = Cliente::where('cpf', $cpf)->first();
+    
+        // Retorna a resposta baseada na existência do cliente
+        if ($cliente) {
+            return response()->json(['success' => true, 'cliente' => $cliente]);
+        } else {
+            return response()->json(['success' => false]);
+        }
+    }
+    
+
 }

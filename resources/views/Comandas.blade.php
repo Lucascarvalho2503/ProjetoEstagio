@@ -62,6 +62,13 @@
                     <p class="font-normal text-gray-700 dark:text-gray-400 mt-4">Horário de entrada: {{ \Carbon\Carbon::parse($comanda->reserva->horario_entrada)->format('H:i') }} </p>
                     <p class="font-normal text-gray-700 dark:text-gray-400 mt-4">Horas contratadas: {{ $comanda->reserva->horas_contratadas }} </p>
                     <p class="font-normal text-gray-700 dark:text-gray-400 mt-4">Valor da comanda: R$ {{ number_format($comanda->valor_comanda, 2, ',', ',') }}</p>
+                    <form method="POST" action="{{ route('comanda.finalizar', $comanda->id) }}">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit" class="text-white h-10 mt-4 bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">
+                            Finalizar Comanda
+                        </button>
+                    </form>
                 </div>
             @endif
         @endforeach

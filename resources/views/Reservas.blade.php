@@ -19,27 +19,14 @@
         <form id="reservationForm" action="{{ route('reservas.store') }}" method="POST">
             @csrf
             <input type="hidden" id="modalQuartoId" name="quarto_id">
-            
-            <!-- Dropdown para seleção do cliente -->
+            <input type="hidden" id="clienteId" name="cliente_id"> <!-- Campo oculto para o cliente_id -->
+
+            <!-- Campo de CPF para seleção do cliente -->
             <div class="relative inline-block text-left mb-4">
-                <button id="dropdownClienteButton" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center">
-                    Clientes 
-                    <svg class="w-2.5 h-2.5 ml-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                    </svg>
-                </button>
-                <div id="dropdownCliente" class="absolute top-full left-0 z-50 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
-                    <ul class="py-2 text-sm text-gray-700">
-                        @foreach ($clientes as $cliente)
-                            <li>
-                                <div class="flex items-center px-4 py-2 hover:bg-gray-100">
-                                    <input type="radio" id="cliente_{{ $cliente->id }}" name="cliente_id" value="{{ $cliente->id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
-                                    <label for="cliente_{{ $cliente->id }}" class="ml-2 text-sm font-medium">{{ $cliente->nome }}</label>
-                                </div>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
+                <label for="cpf" class="block mb-2 text-sm font-medium text-gray-200">Digite o CPF do Cliente</label>
+                <input type="text" id="cpfInput" class="text-sm px-5 py-2.5 w-full text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="CPF" required>
+                <span id="cpfError" class="text-red-500 text-sm hidden">Usuário não encontrado!</span>
+                <span id="cpfSuccess" class="text-green-500 text-sm hidden">Usuário encontrado: <span id="nomeCliente"></span></span>
             </div>
 
             <div class="mb-4">
@@ -52,19 +39,20 @@
                 <input type="text" id="horas_contratadas" name="horas_contratadas" class="block w-full p-2.5 mt-1 text-sm text-gray-900 bg-gray-600 border border-gray-300 rounded-lg" min="1" required>
             </div>
 
-            <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Criar Reserva</button>
+            <button id="submitButton" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5" disabled>
+                Criar Reserva
+            </button>
+
             <button type="button" onclick="hideReservationModal()" class="ml-2 text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5">Cancelar</button>
         </form>
     </div>
 </div>
 
+
 <div class="flex justify-center ml-64 items-center flex-row mt-6 gap-4">
 <a href="{{ route('clientes.index') }}" class="text-white w-1/3 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 inline-block text-center">
     Criar cliente
 </a>
-<button onclick="showClientesModal()" class="text-white w-1/3 bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5">
-    Buscar cliente
-</button>
 </div>
 
 <div class="flex justify-center ml-64 items-center flex-col">
@@ -93,7 +81,7 @@
                             @if ($quarto->currentReservation)
                                 <button onclick="showVisualizarModal({{ $quarto->currentReservation->id }})" class="text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2.5">Visualizar</button>
                                 <button onclick="showEditModal({{ $quarto->currentReservation->id }})" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5">Editar</button>
-                                <button onclick="finalizeReservation({{ $quarto->currentReservation->id }})" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2.5">Finalizar</button>
+                            
                                 <form action="{{ route('reservas.destroy', $quarto->currentReservation->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')
@@ -150,13 +138,6 @@
 </div>
 
 
-
-
-
-
-
-
-
 <!-- Modal de Edição -->
 <div id="editModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden z-50">
     <div class="bg-gray-600 border border-black rounded-lg w-96 p-6">
@@ -165,25 +146,6 @@
             @csrf
             @method('PUT')
             <input type="hidden" id="edit_quarto_id" name="quarto_id">
-
-            <!-- Dropdown para edição de seleção do cliente -->
-            <div class="relative inline-block text-left mb-4">
-                <button id="dropdownEditClienteButton" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center">
-                    Clientes <svg class="w-2.5 h-2.5 ml-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/></svg>
-                </button>
-                <div id="dropdownEditCliente" class="absolute top-full left-0 z-50 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
-                    <ul class="py-2 text-sm text-gray-700">
-                        @foreach ($clientes as $cliente)
-                        <li>
-                            <div class="flex items-center px-4 py-2 hover:bg-gray-100">
-                                <input type="radio" id="edit_cliente_{{ $cliente->id }}" name="cliente_id" value="{{ $cliente->id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
-                                <label for="edit_cliente_{{ $cliente->id }}" class="ml-2 text-sm font-medium">{{ $cliente->nome }}</label>
-                            </div>
-                        </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
 
             <div class="mb-4">
                 <label for="edit_horario_entrada" class="block text-sm font-medium text-white">Hora de Entrada</label>
@@ -200,6 +162,7 @@
         </form>
     </div>
 </div>
+
 
 <!-- Modal de Visualização -->
 <div id="visualizarModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden z-50">
@@ -236,7 +199,8 @@
         document.getElementById('reservationModal').classList.add('hidden');
     }
 
-    function showEditModal(reservaId) {
+        function showEditModal(reservaId) {
+        // Faz a requisição para buscar os dados da reserva
         fetch(`/reservas/${reservaId}/edit`)
             .then(response => {
                 if (!response.ok) {
@@ -245,10 +209,13 @@
                 return response.json();
             })
             .then(data => {
+                // Preenche o formulário de edição com os dados recebidos
                 document.getElementById('editReservationForm').action = `/reservas/${reservaId}`;
-                document.getElementById('edit_quarto_id').value = data.quarto_id; // Adicione esta linha
-                document.getElementById('edit_horario_entrada').value = data.horario_entrada.substr(11, 5); // Extrai a hora
+                document.getElementById('edit_quarto_id').value = data.quarto_id; 
+                document.getElementById('edit_horario_entrada').value = data.horario_entrada; // Usa o horário de entrada no formato correto
                 document.getElementById('edit_horas_contratadas').value = data.horas_contratadas;
+                
+                // Exibe o modal de edição
                 document.getElementById('editModal').classList.remove('hidden');
             })
             .catch(error => {
@@ -260,6 +227,7 @@
     function hideEditModal() {
         document.getElementById('editModal').classList.add('hidden');
     }
+
 
     function showVisualizarModal(reservaId) {
         fetch(`/reservas/${reservaId}/detalhes`)
@@ -358,14 +326,55 @@
             timePattern: ['h', 'm']
         });
     });
+
+    document.getElementById('cpfInput').addEventListener('blur', function () {
+    let cpf = this.value.replace(/\D/g, ''); // Remove pontos e traços do CPF
+
+    // Valida se o CPF tem 11 dígitos
+    if (cpf.length !== 11) {
+        document.getElementById('cpfError').classList.remove('hidden');
+        document.getElementById('cpfSuccess').classList.add('hidden');
+        document.getElementById('submitButton').disabled = true; // Desabilita o botão
+        return;
+    }
+
+    // Limpa mensagens anteriores
+    document.getElementById('cpfError').classList.add('hidden');
+    document.getElementById('cpfSuccess').classList.add('hidden');
+
+    // Faz a verificação do CPF no backend
+    fetch('{{ route('reservations.verificarCpf') }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ cpf: cpf })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Cliente encontrado, habilita o botão
+            document.getElementById('cpfSuccess').classList.remove('hidden');
+            document.getElementById('nomeCliente').textContent = data.cliente.nome;
+            document.getElementById('clienteId').value = data.cliente.id; // Define o cliente_id
+            document.getElementById('submitButton').disabled = false; // Habilita o botão
+        } else {
+            // Cliente não encontrado, exibe mensagem de erro e desabilita o botão
+            document.getElementById('cpfError').classList.remove('hidden');
+            document.getElementById('clienteId').value = ''; // Limpa o cliente_id
+            document.getElementById('submitButton').disabled = true; // Desabilita o botão
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        document.getElementById('cpfError').classList.remove('hidden');
+        document.getElementById('submitButton').disabled = true;
+    });
+});
+
+    
 </script>
-
-
-
-
-
-
-
 
 
 </body>

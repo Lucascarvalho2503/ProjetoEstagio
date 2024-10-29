@@ -34,11 +34,12 @@ class ComandaController extends Controller
     }
 
     public function show(Comanda $comanda)
-{
-    $comanda->load('produtos.produto');
-    $produtos = Produto::all(); // Certifica-se de que $produtos esteja disponível na view
-    return view('Comandas', compact('comanda', 'produtos'));
-}
+    {
+       $comanda->load('produtos.produto');
+       $produtos = Produto::all(); 
+       $comandas = Comanda::all(); 
+       return view('Comandas', compact('comanda', 'produtos', 'comandas')); 
+    }
 
     public function update(Request $request, Comanda $comanda)
     {
@@ -58,4 +59,25 @@ class ComandaController extends Controller
         $comanda->delete();
         return redirect()->route('comandas.index')->with('success', 'Comanda excluída com sucesso.');
     }
+
+    public function finalizar($id)
+    {
+        $reservation = Reservation::findOrFail($id);
+
+        $reservation->quarto->status_id = 1; // Disponível
+        $reservation->quarto->save();
+
+        $reservation->status = 'close';
+        $reservation->save();
+
+        $comanda = Comanda::where('reservation_id', $id)->first();
+        if ($comanda) {
+            $comanda->status = 'closed';
+            $comanda->save();
+        }
+
+        return redirect()->route('comandas.index')->with('success', 'Reserva finalizada com sucesso!');
+    }
+
+
 }

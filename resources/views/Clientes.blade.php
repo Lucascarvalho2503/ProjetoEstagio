@@ -71,25 +71,55 @@
 
 
 <div class="flex justify-center ml-64 items-center flex-col mt-8">
-    <!-- Formulário para criar novos clientes -->
-    <div class="w-[700px] p-5 bg-gray-600 border border-black rounded-lg">
-        <form action="{{ route('clientes.store') }}" method="POST" class="mt-1">
-            @csrf
-            <div class="w-full">
-                <label for="nome" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nome do cliente</label>
-                <input type="text" name="nome" id="nome" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-            </div>
-            <div class="w-full mt-2">
-                <label for="cpf" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">CPF do cliente</label>
-                <input type="text" name="cpf" id="cpf" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-            </div>
-            <div class="w-full mt-2">
-                <label for="celular" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Celular do cliente</label>
-                <input type="text" name="celular" id="celular" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-            </div>
-            <button type="submit" class="text-white h-10 mt-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Criar cliente</button>
-        </form>
+        <!-- Formulário para criar novos clientes -->
+        <!-- Botão para abrir o modal de cliente -->
+    <div class="flex justify-center items-center mt-8">
+        <button onclick="showClientModal()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+            Adicionar Novo Cliente
+        </button>
     </div>
+
+    <!-- Modal de Criação de Cliente -->
+    <div id="clientModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden z-50">
+        <div class="bg-gray-600 border border-black rounded-lg w-[700px] p-5">
+            <h2 class="text-xl font-bold text-white mb-4">Criar Cliente</h2>
+            <form action="{{ route('clientes.store') }}" method="POST" class="mt-1">
+                @csrf
+                <div class="w-full">
+                    <label for="nome" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nome do cliente</label>
+                    <input type="text" name="nome" id="nome" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                </div>
+                <div class="w-full mt-2">
+                    <label for="cpf" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">CPF do cliente</label>
+                    <input type="text" name="cpf" id="cpf" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                </div>
+                <div class="w-full mt-2">
+                    <label for="celular" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Celular do cliente</label>
+                    <input type="text" name="celular" id="celular" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                </div>
+                <div class="flex justify-between mt-4">
+                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        Criar Cliente
+                    </button>
+                    <button type="button" onclick="hideClientModal()" class="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script para abrir e fechar o modal -->
+    <script>
+        function showClientModal() {
+            document.getElementById('clientModal').classList.remove('hidden');
+        }
+
+        function hideClientModal() {
+            document.getElementById('clientModal').classList.add('hidden');
+        }
+    </script>
+
 
     <!-- Tabela para exibir os clientes -->
   <div class="relative mt-2 w-[700px] h-full overflow-x-auto shadow-md sm:rounded-lg">
@@ -115,9 +145,12 @@
                     <td class="px-6 py-4 text-gray-300">
                         {{ $cliente->celular }}
                     </td>
-                    <td class="px-6 py-4 text-blue-600 editButton" data-cliente="{{ json_encode($cliente) }}">
+                    <td class="px-6 py-4">
+                    <div class="bg-blue-500 text-white font-bold py-2 px-4 rounded text-center cursor-pointer hover:bg-blue-700 editButton" data-cliente="{{ json_encode($cliente) }}">
                         Editar
+                    </div>
                     </td>
+
                     <td class="px-6 py-4">
                         <form action="{{ route('clientes.destroy', $cliente->id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir este cliente?');">
                             @csrf

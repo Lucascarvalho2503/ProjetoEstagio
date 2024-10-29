@@ -47,6 +47,8 @@ Route::post('/comandas', [ComandaController::class, 'store'])->name('comandas.st
 Route::get('/comandas/{comanda}', [ComandaController::class, 'show'])->name('comandas.show');
 Route::put('/comandas/{comanda}', [ComandaController::class, 'update'])->name('comandas.update');
 Route::delete('/comandas/{comanda}', [ComandaController::class, 'destroy'])->name('comandas.destroy');
+Route::put('/comanda/{comanda}/finalizar', [ComandaController::class, 'finalizar'])->name('comanda.finalizar');
+
 
 // Adicionar produto à comanda
 Route::post('/comandas/adicionar-produto', [ComandaProdutoController::class, 'store'])->name('comanda.adicionarProduto');
@@ -56,6 +58,7 @@ Route::get('/comandas/{comanda}', [ComandaController::class, 'show'])->name('com
 Route::delete('/comandas/{comanda}/produtos/{produto}', [ComandaProdutoController::class, 'destroy'])->name('comanda.removerProduto');
 
 
+Route::post('/reservations/verificar-cpf', [ReservationController::class, 'verificarCpf'])->name('reservations.verificarCpf');
 
 
 
