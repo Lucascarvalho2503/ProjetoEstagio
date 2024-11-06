@@ -73,16 +73,20 @@ class ReservationController extends Controller
         $horarioEntrada = Carbon::createFromFormat('H:i', $request->input('horario_entrada'))->format('Y-m-d H:i:s');
         $horarioSaida = Carbon::createFromFormat('H:i', $request->input('horario_entrada'))->addHours((int)$request->input('horas_contratadas'))->format('Y-m-d H:i:s');
 
+        // Recalcule o valor final
+        $quarto = $reservation->quarto; // Relacione o quarto da reserva
+        $valor_final = $quarto->valor_hora * (int)$request->input('horas_contratadas');
+
         // Atualize os dados da reserva
         $reservation->update([
             'horario_entrada' => $horarioEntrada,
             'horas_contratadas' => $request->input('horas_contratadas'),
             'horario_saida' => $horarioSaida,
+            'valor_final' => $valor_final, // Atualiza o valor total
         ]);
 
         return redirect()->route('reservas.index')->with('success', 'Reserva atualizada com sucesso.');
     }
-
 
     public function finalizar($id)
     {
@@ -148,7 +152,6 @@ class ReservationController extends Controller
         ]);
     }
 
-
     public function verificarCpf(Request $request)
     {
         // Limpa o CPF removendo tudo que não é número
@@ -169,6 +172,4 @@ class ReservationController extends Controller
             return response()->json(['success' => false]);
         }
     }
-    
-
 }
