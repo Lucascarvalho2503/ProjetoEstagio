@@ -7,12 +7,26 @@ use Illuminate\Http\Request;
 
 class ClienteController extends Controller
 {
-    // Método para exibir a lista de clientes
-    public function index()
-    {
-        $clientes = Cliente::all();
-        return view('Clientes', compact('clientes'));
-    }
+        // Método para exibir a lista de clientes
+        public function index()
+        {
+            // Recupera todos os clientes e verifica se possuem reservas ativas
+            $clientes = Cliente::with(['reservations' => function ($query) {
+                $query->active(); // Usa o escopo 'active' para filtrar apenas reservas ativas
+            }])->get()
+            ->map(function ($cliente) {
+                // Define 'possui_reserva' como true apenas se houver reservas ativas
+                $cliente->possui_reserva = $cliente->reservations->isNotEmpty();
+                return $cliente;
+            });
+        
+            return view('Clientes', compact('clientes'));
+        }
+        
+        
+
+        
+
 
     // Método para criar um novo cliente
     public function store(Request $request)
